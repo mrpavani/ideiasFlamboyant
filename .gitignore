@@ -1,0 +1,10 @@
+.env
+.env.*
+!.env.example
+/public/uploads/*
+!/public/uploads/.gitkeep
+/vendor/
+/deploy/
+*.log
+.DS_Store
+Thumbs.db
