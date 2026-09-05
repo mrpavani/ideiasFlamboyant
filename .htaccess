@@ -1,0 +1,32 @@
+# =====================================================================
+#  Proteção de raiz — só é necessária se a Raiz do documento do site
+#  ainda NÃO estiver apontando para a pasta /public deste projeto
+#  (que é o jeito correto). Depois de corrigir isso no hPanel, este
+#  arquivo deixa de ser lido pelo servidor e pode continuar aqui sem
+#  problema nenhum.
+# =====================================================================
+
+# Bloqueia arquivos de configuração/dados/scripts que nunca devem ser públicos
+<FilesMatch "\.(env|sql|log|lock|bat|md)$">
+    <IfModule mod_authz_core.c>
+        Require all denied
+    </IfModule>
+    <IfModule !mod_authz_core.c>
+        Order allow,deny
+        Deny from all
+    </IfModule>
+</FilesMatch>
+
+# Bloqueia qualquer arquivo "oculto" (.env, .env.example, .gitignore, .git/*)
+<FilesMatch "^\.">
+    <IfModule mod_authz_core.c>
+        Require all denied
+    </IfModule>
+    <IfModule !mod_authz_core.c>
+        Order allow,deny
+        Deny from all
+    </IfModule>
+</FilesMatch>
+
+# Evita listar o conteúdo da pasta quando não há um index aqui
+Options -Indexes
