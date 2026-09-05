@@ -6,12 +6,12 @@ declare(strict_types=1);
  * Front controller — todas as requisições passam por aqui.
  */
 
-$config = require dirname(__DIR__) . '/app/bootstrap.php';
+$config = require __DIR__ . '/app/bootstrap.php';
 
 use Core\Router;
 
 $router = new Router();
-(require dirname(__DIR__) . '/app/routes.php')($router);
+(require __DIR__ . '/app/routes.php')($router);
 
 try {
     $router->dispatch($_SERVER['REQUEST_URI'] ?? '/');

@@ -18,4 +18,4 @@ echo.
 echo ------------------------------------------------------------
 echo  Servidor em http://localhost:8000   (CTRL+C para parar)
 echo ------------------------------------------------------------
-php -S localhost:8000 -t public
+php -S localhost:8000 server.php

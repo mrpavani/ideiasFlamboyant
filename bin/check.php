@@ -42,8 +42,8 @@ printf("      host=%s:%d  db=%s  user=%s  senha=%s\n",
     $db['pass'] === '' ? '(vazia)' : '(' . strlen((string) $db['pass']) . ' caracteres)');
 
 // uploads graváveis
-$upOk = is_writable($root . '/public/uploads');
-$line('public/uploads gravável', $upOk);
+$upOk = is_writable($root . '/uploads');
+$line('uploads/ gravável', $upOk);
 
 // Conexão MySQL
 try {
@@ -92,5 +92,5 @@ try {
     exit(1);
 }
 
-echo "\n" . ($ok ? "Tudo certo. Rode:  php -S localhost:8000 -t public\n\n" : "Corrija os itens [ERR] acima.\n\n");
+echo "\n" . ($ok ? "Tudo certo. Rode:  php -S localhost:8000 server.php\n\n" : "Corrija os itens [ERR] acima.\n\n");
 exit($ok ? 0 : 1);

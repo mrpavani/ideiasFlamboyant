@@ -5,9 +5,14 @@
 
 declare(strict_types=1);
 
+// A pasta pública é a própria raiz do projeto (index.php, assets/ e
+// uploads/ vivem aqui) — assim o deploy funciona em hospedagens que
+// não permitem apontar a Raiz do documento para uma subpasta (ex.:
+// Git deploy do Hostinger, que instala tudo direto em public_html).
+// app/, database/, bin/ e logo/ ficam protegidos por .htaccess próprios.
 defined('BASE_PATH')   || define('BASE_PATH', dirname(__DIR__, 2));
 defined('APP_PATH')    || define('APP_PATH', BASE_PATH . '/app');
-defined('PUBLIC_PATH') || define('PUBLIC_PATH', BASE_PATH . '/public');
+defined('PUBLIC_PATH') || define('PUBLIC_PATH', BASE_PATH);
 defined('UPLOAD_PATH') || define('UPLOAD_PATH', PUBLIC_PATH . '/uploads');
 
 /**

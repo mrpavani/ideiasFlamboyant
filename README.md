@@ -24,11 +24,10 @@ Stack: **PHP 8.1+ / MySQL 8 / JavaScript (vanilla)** — sem framework, sem depe
 
 ```
 ecomerce-ideia/
-├── public/                 # raiz web (aponte o virtualhost / DocumentRoot aqui)
-│   ├── index.php           # front controller
-│   ├── .htaccess
-│   ├── assets/             # css, js, imagens estáticas
-│   └── uploads/            # imagens de produtos (gravável)
+├── index.php               # front controller — raiz web (aponte o virtualhost / DocumentRoot aqui)
+├── .htaccess
+├── assets/                 # css, js, imagens estáticas
+├── uploads/                # imagens de produtos (gravável)
 ├── app/
 │   ├── config/             # configuração (lê .env)
 │   ├── core/               # Database, Router, Controller, Auth, helpers...
@@ -37,12 +36,24 @@ ecomerce-ideia/
 │   ├── services/           # gateways de pagamento
 │   ├── views/              # templates PHP
 │   └── routes.php          # tabela de rotas
+│   └── .htaccess           # bloqueia acesso direto (Require all denied)
 ├── database/
 │   ├── schema.sql          # estrutura das tabelas
-│   └── seed.sql            # dados iniciais (admin, categorias, exemplos)
+│   ├── seed.sql            # dados iniciais (admin, categorias, exemplos)
+│   └── .htaccess           # bloqueia acesso direto
+├── bin/.htaccess           # bloqueia acesso direto
 ├── .env.example
 └── README.md
 ```
+
+> **Por quê a raiz web é a raiz do projeto, e não uma subpasta `public/`?**
+> Assim o projeto funciona em hospedagens que não deixam trocar a Raiz do
+> documento (ex.: Git deploy do Hostinger, que instala tudo direto em
+> `public_html`). `app/`, `database/`, `bin/` e `logo/` ficam protegidos por
+> `.htaccess` próprios (`Require all denied`) em vez de depender de uma
+> pasta fora do alcance do navegador. Se seu servidor permitir apontar a
+> Raiz do documento para uma subpasta isolada, isso é ainda mais seguro —
+> mas não é obrigatório com essa estrutura.
 
 ---
 
@@ -71,16 +82,20 @@ ecomerce-ideia/
 
 3. **Servidor web**
 
-   Aponte o `DocumentRoot` (ou a pasta pública do Laragon) para `public/`.
-   Alternativa rápida com o servidor embutido do PHP:
+   Aponte o `DocumentRoot` (ou a pasta pública do Laragon) para a **raiz do projeto**.
+   Alternativa rápida com o servidor embutido do PHP (rode a partir da raiz do projeto):
 
    ```bash
-   php -S localhost:8000 -t public
+   php -S localhost:8000 server.php
    ```
+
+   (`server.php` é só um roteador que replica localmente as mesmas regras
+   de bloqueio que o `.htaccess` aplica em produção — o servidor embutido
+   do PHP não lê `.htaccess`.)
 
 4. **Permissão de upload**
 
-   Garanta que `public/uploads/` tenha permissão de escrita.
+   Garanta que `uploads/` tenha permissão de escrita.
 
 5. **Acesse**
 

@@ -1,13 +1,24 @@
-# =====================================================================
-#  Proteção de raiz — só é necessária se a Raiz do documento do site
-#  ainda NÃO estiver apontando para a pasta /public deste projeto
-#  (que é o jeito correto). Depois de corrigir isso no hPanel, este
-#  arquivo deixa de ser lido pelo servidor e pode continuar aqui sem
-#  problema nenhum.
-# =====================================================================
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+    RewriteBase /
 
-# Bloqueia arquivos de configuração/dados/scripts que nunca devem ser públicos
-<FilesMatch "\.(env|sql|log|lock|bat|md)$">
+    # Serve arquivos e diretórios existentes diretamente
+    RewriteCond %{REQUEST_FILENAME} -f [OR]
+    RewriteCond %{REQUEST_FILENAME} -d
+    RewriteRule ^ - [L]
+
+    # Todo o resto vai para o front controller
+    RewriteRule ^ index.php [QSA,L]
+</IfModule>
+
+<IfModule mod_headers.c>
+    Header set X-Content-Type-Options "nosniff"
+    Header set X-Frame-Options "SAMEORIGIN"
+    Header set Referrer-Policy "strict-origin-when-cross-origin"
+</IfModule>
+
+# Bloqueia acesso a arquivos de configuração/dados/scripts que nunca devem ser públicos
+<FilesMatch "\.(env|sql|log|lock|bat|md|json)$">
     <IfModule mod_authz_core.c>
         Require all denied
     </IfModule>
@@ -28,5 +39,5 @@
     </IfModule>
 </FilesMatch>
 
-# Evita listar o conteúdo da pasta quando não há um index aqui
 Options -Indexes
+DirectoryIndex index.php
